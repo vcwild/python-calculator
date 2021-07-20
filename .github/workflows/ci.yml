@@ -1,0 +1,68 @@
+name: Continuous Integration Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+
+jobs:
+  execute_black_linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Install Python 3.9.5
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.5
+
+      - name: Install Poetry
+        uses: Gr1N/setup-poetry@v4
+
+      - name: Install Project Dependencies
+        run: poetry install
+
+      - name: Execute the Black Linter
+        run: poetry run black src --check
+
+  execute_import_sorter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Install Python 3.9.5
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.5
+
+      - name: Install Poetry
+        uses: Gr1N/setup-poetry@v4
+
+      - name: Install Project Dependencies
+        run: poetry install
+
+      - name: Execute the isort Sorter
+        run: poetry run isort --check src
+
+  execute_unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Install Python 3.9.5
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.5
+
+      - name: Install Poetry
+        uses: Gr1N/setup-poetry@v4
+
+      - name: Install Project Dependencies
+        run: poetry install
+
+      - name: Execute unit tests
+        run: poetry run python3 -m unittest tests/test_calculator.py -v
